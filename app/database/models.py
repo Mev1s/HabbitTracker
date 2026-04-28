@@ -3,11 +3,11 @@ from sqlalchemy import (
     Column,
     MetaData,
     BigInteger,
-    ForeignKey,
+    ForeignKey, DateTime, func
 )
-from datetime import date
+from datetime import datetime
 from sqlalchemy.orm import mapped_column, Mapped
-from typing import Annotated
+
 
 
 from .base import Base
@@ -16,8 +16,8 @@ class UsersOrm(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    chat_id: Mapped[int] = mapped_column(BigInteger)
-    telegram_id: Mapped[int] = mapped_column(BigInteger)
+    telegram_id: Mapped[int] = mapped_column(BigInteger, unique=True)
+    account_created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now)
 
 
 class HabitsOrm(Base):
@@ -25,5 +25,5 @@ class HabitsOrm(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str]
     description: Mapped[str | None]
-    created_at: Mapped[date] = mapped_column(default=date.today)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
