@@ -9,7 +9,7 @@ class HabitBase(BaseModel):
         Optional[str],
         Field(
             description="Description of the habit", default="No description provided"
-        )
+        ),
     ]
     user_id: Annotated[int, Field(description="User id of the habit to UsersOrm")]
 
