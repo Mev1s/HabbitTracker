@@ -25,7 +25,9 @@ class UserService:
 
     async def user_create(self, user: UserCreate):
         repository = UserRepository(self.session)
-        result_user_by_telegram_id = await repository.get_user_by_telegram_id(telegram_id = user.telegram_id)
+        result_user_by_telegram_id = await repository.get_user_by_telegram_id(
+            telegram_id=user.telegram_id
+        )
         if result_user_by_telegram_id:
             raise HTTPException(status_code=400, detail="User already exists")
         new_user = await repository.user_create(user)
