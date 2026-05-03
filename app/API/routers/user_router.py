@@ -1,7 +1,7 @@
 from sqlalchemy.util import await_only
 
-from ...services.userService import UserService
-from ...schemas.userSchema import (
+from ...services.user_service import UserService
+from ...schemas.user_schema import (
     UserResponse as UserResponseSchema,
     UserCreate as UserCreateSchema,
 )

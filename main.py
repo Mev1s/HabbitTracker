@@ -1,6 +1,6 @@
 import asyncio
 from app.database.setup import create_tables
-from app.API.routes.app import create_app
+from app.API.app import create_app
 
 app = create_app()
 

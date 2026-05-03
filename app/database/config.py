@@ -3,7 +3,7 @@ from data import *
 
 async_engine = create_async_engine(
     url=f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}",
-    echo=True,
+    echo=False,
 )
 async_session_factory = async_sessionmaker(
     bind=async_engine, expire_on_commit=False, class_=AsyncSession

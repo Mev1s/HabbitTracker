@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 
-from app.repository.userRepo import UserRepository
-from app.schemas.userSchema import UserCreate
+from app.repository.user_repository import UserRepository
+from app.schemas.user_schema import UserCreate
 
 
 class UserService:
