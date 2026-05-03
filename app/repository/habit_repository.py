@@ -1,5 +1,5 @@
-from fastapi import HTTPException
 from sqlalchemy import select
+
 from app.database.models import HabitsOrm, UsersOrm
 
 

@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field, ConfigDict
 from typing import Annotated
 from datetime import datetime
+
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class UserBase(BaseModel):

@@ -1,15 +1,15 @@
-from sqlalchemy.util import await_only
+from typing import List, Dict
+from datetime import datetime
+
+from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import Depends, APIRouter
 
 from ...services.user_service import UserService
+from ..deps.deps import get_db
 from ...schemas.user_schema import (
     UserResponse as UserResponseSchema,
     UserCreate as UserCreateSchema,
 )
-from ..deps.deps import get_db
-from fastapi import Depends, APIRouter
-from typing import List, Dict
-from sqlalchemy.ext.asyncio import AsyncSession
-from datetime import datetime
 
 user_router = APIRouter()
 

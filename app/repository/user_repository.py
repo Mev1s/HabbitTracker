@@ -1,5 +1,6 @@
-from app.database.models import UsersOrm
 from sqlalchemy import select, update
+
+from app.database.models import UsersOrm
 
 
 class UserRepository:

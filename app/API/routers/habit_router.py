@@ -4,11 +4,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ...services.habit_service import habitService
+from ..deps.deps import get_db
 from ...schemas.habit_schema import (
     HabitResponse as HabitResponseSchema,
     HabitCreate as HabitCreateSchema,
 )
-from ..deps.deps import get_db
 
 habit_router = APIRouter()
 
@@ -39,3 +39,5 @@ async def get_habits_by_user_telegram_id(
     telegram_id: int, db: AsyncSession = Depends(get_db)
 ):
     return await habitService(db).get_habits_by_user_telegram_id(telegram_id)
+
+

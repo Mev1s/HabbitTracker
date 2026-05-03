@@ -1,4 +1,5 @@
 import asyncio
+
 from app.database.setup import create_tables
 from app.API.app import create_app
 

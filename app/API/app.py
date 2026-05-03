@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from app.API.routers.user_router import user_router
 from app.API.routers.habit_router import habit_router
 
