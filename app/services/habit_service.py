@@ -34,3 +34,14 @@ class habitService:
         if not habits:
             raise HTTPException(status_code=404, detail="Habit not found")
         return habits
+
+    async def create_habit(self, data):
+        new_habit = await HabitRepository(self.session).create_habit(data)
+        user = await UserRepository(self.session).get_user_by_id(new_habit.user_id)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        old_habits = await HabitRepository(self.session).get_habits_by_user_id(user.id)
+        for habit in old_habits:
+            if habit.title == new_habit.title:
+                raise HTTPException(status_code=409, detail="Habit already exists")
+        return new_habit

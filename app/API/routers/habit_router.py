@@ -40,4 +40,6 @@ async def get_habits_by_user_telegram_id(
 ):
     return await habitService(db).get_habits_by_user_telegram_id(telegram_id)
 
-
+@habit_router.post("/create", response_model=HabitResponseSchema)
+async def create_habit(data: HabitCreateSchema, db: AsyncSession = Depends(get_db)):
+    return await habitService(db).create_habit(data)

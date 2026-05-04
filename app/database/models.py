@@ -25,5 +25,5 @@ class HabitsOrm(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
-    last_updated_at: Mapped[datetime] = mapped_column()
+    last_updated_at: Mapped[datetime | None] = mapped_column()
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))

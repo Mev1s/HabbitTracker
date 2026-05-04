@@ -1,6 +1,7 @@
 from sqlalchemy import select
 
 from app.database.models import HabitsOrm, UsersOrm
+from ..schemas.habit_schema import HabitCreate
 
 
 class HabitRepository:
@@ -22,3 +23,8 @@ class HabitRepository:
             select(HabitsOrm).join(UsersOrm).where(HabitsOrm.user_id == UsersOrm.id)
         )
         return result.scalars().all()
+
+    async def create_habit(self, data: HabitCreate):
+        new_habit = HabitsOrm(**data.model_dump())
+        self.session.add(new_habit)
+        return new_habit
