@@ -25,5 +25,11 @@ class HabitsOrm(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
-    last_updated_at: Mapped[datetime | None] = mapped_column()
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+
+
+class HabitsLogsOrm(Base):
+    __tablename__ = "habits_logs"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    last_complete: Mapped[datetime] = mapped_column(server_default=func.now())
+    habit_id: Mapped[int] = mapped_column(ForeignKey("habits.id", ondelete="CASCADE"))

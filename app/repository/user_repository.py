@@ -25,6 +25,5 @@ class UserRepository:
 
     async def user_create(self, user: UsersOrm):
         new_user = UsersOrm(**user.model_dump())
-        print(new_user, "rffr" * 20)
         self.session.add(new_user)
         return new_user
