@@ -7,8 +7,10 @@ from datetime import datetime
 class HabitLogsBase(BaseModel):
     habit_id: Annotated[int, Field(description="Habit foreign key ID to habits")]
 
+
 class HabitLogsCreate(HabitLogsBase):
     pass
+
 
 class HabitLogsResponse(HabitLogsBase):
     model_config = ConfigDict(from_attributes=True)

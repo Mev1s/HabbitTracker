@@ -1,7 +1,7 @@
 from fastapi import HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..repository.habit_log_repository import HabitLogRepository
+
 
 class HabitLogsService:
     def __init__(self, session):
