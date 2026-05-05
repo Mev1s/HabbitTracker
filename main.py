@@ -8,6 +8,7 @@ app = create_app()
 
 async def main():
     await create_tables()
+    print("all tables created")
 
 
 if __name__ == "__main__":

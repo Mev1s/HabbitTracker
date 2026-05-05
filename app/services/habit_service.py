@@ -36,12 +36,17 @@ class habitService:
         return habits
 
     async def create_habit(self, data):
-        new_habit = await HabitRepository(self.session).create_habit(data)
-        user = await UserRepository(self.session).get_user_by_id(new_habit.user_id)
+        user = await UserRepository(self.session).get_user_by_id(data.user_id)
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
-        old_habits = await HabitRepository(self.session).get_habits_by_user_id(user.id)
-        for habit in old_habits:
-            if habit.title == new_habit.title:
+
+        old_user_habits = await HabitRepository(self.session).get_habits_by_user_id(user.id)
+        for habit in old_user_habits:
+            if habit.title == data.title:
                 raise HTTPException(status_code=409, detail="Habit already exists")
+
+        new_habit = await HabitRepository(self.session).create_habit(data)
+
+        await self.session.commit()
+        await self.session.refresh(new_habit)
         return new_habit
