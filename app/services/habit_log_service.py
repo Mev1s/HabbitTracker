@@ -16,7 +16,9 @@ class HabitLogsService:
         return result
 
     async def get_habit_logs_by_id(self, habit_log_id: int):
-        result = await HabitLogRepository(self.session).get_habit_logs_by_id(habit_log_id)
+        result = await HabitLogRepository(self.session).get_habit_logs_by_id(
+            habit_log_id
+        )
         if not result:
             raise HTTPException(status_code=404, detail="No habit logs")
         return result
@@ -24,7 +26,9 @@ class HabitLogsService:
     async def get_habit_logs_by_telegram_id(self, telegram_id: int):
         habits_id = []
 
-        user = await UserRepository(self.session).get_user_by_telegram_id(int(telegram_id))
+        user = await UserRepository(self.session).get_user_by_telegram_id(
+            int(telegram_id)
+        )
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
 
@@ -35,10 +39,18 @@ class HabitLogsService:
         for habit in user_habits:
             habits_id.append(habit.id)
 
-        habit_logs = await HabitLogRepository(self.session).get_habit_logs_by_habit_id(habits_id)
+        habit_logs = await HabitLogRepository(self.session).get_habit_logs_by_habit_id(
+            habits_id
+        )
         if not habit_logs:
             raise HTTPException(status_code=404, detail="Habit logs not found")
 
         return habit_logs
+
+   # async def create_habit_logs(self, data):
+        #habits = await HabitRepository(self.session).
+
+
+
 
 

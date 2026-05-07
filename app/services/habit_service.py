@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+from sqlalchemy.util import await_only
 
 from ..repository.habit_repository import HabitRepository
 from ..repository.user_repository import UserRepository
@@ -13,6 +14,12 @@ class habitService:
         if not result:
             raise HTTPException(status_code=404, detail="Habit not found")
         return result
+
+    async def get_habit_by_id(self, habit_id):
+        habit = await HabitRepository(self.session).get_habit_by_id(habit_id)
+        if not habit:
+            raise HTTPException(status_code=404, detail="Habit not found")
+        return habit
 
     async def get_habits_by_title(self, title: str):
         result = await HabitRepository(self.session).get_habits_by_title(title)
@@ -40,7 +47,9 @@ class habitService:
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
 
-        old_user_habits = await HabitRepository(self.session).get_habits_by_user_id(user.id)
+        old_user_habits = await HabitRepository(self.session).get_habits_by_user_id(
+            user.id
+        )
         for habit in old_user_habits:
             if habit.title == data.title:
                 raise HTTPException(status_code=409, detail="Habit already exists")
@@ -50,3 +59,5 @@ class habitService:
         await self.session.commit()
         await self.session.refresh(new_habit)
         return new_habit
+
+

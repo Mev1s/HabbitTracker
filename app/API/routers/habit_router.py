@@ -19,6 +19,9 @@ async def get_all(
 ) -> List[Dict[HabitResponseSchema, str | int | None]]:
     return await habitService(db).get_all_habits()
 
+@habit_router.get("by_id/{habit_id}", response_model=List[HabitResponseSchema])
+async def get_habit_by_id(habit_id: int, db: AsyncSession = Depends(get_db)):
+    return await habitService(db).get_habit_by_id(habit_id)
 
 @habit_router.get("/by_title/{title}", response_model=HabitCreateSchema)
 async def get_habit_by_title(

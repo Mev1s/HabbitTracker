@@ -16,5 +16,7 @@ class HabitLogRepository:
         return result.scalars().all()
 
     async def get_habit_logs_by_habit_id(self, habits_id: list[int]):
-        result = await self.session.execute(select(HabitsLogsOrm).where(HabitsLogsOrm.habit_id.in_(habits_id)))
-        return result.scalars().all()
+        result = await self.session.execute(
+            select(HabitsLogsOrm).where(HabitsLogsOrm.habit_id.in_(habits_id))
+        )
+        return result.scalars().one_or_none()

@@ -29,7 +29,7 @@ class UserService:
             telegram_id=user.telegram_id
         )
         if result_user_by_telegram_id:
-            raise HTTPException(status_code=400, detail="User already exists")
+            raise HTTPException(status_code=409, detail="User already exists")
         new_user = await repository.user_create(user)
         await self.session.commit()
         await self.session.refresh(new_user)
