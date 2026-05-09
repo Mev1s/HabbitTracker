@@ -13,7 +13,7 @@ from ...schemas.habit_schema import (
 habit_router = APIRouter()
 
 
-@habit_router.get("/all", response_model=HabitResponseSchema)
+@habit_router.get("/all", response_model=List[HabitResponseSchema])
 async def get_all(
     db: AsyncSession = Depends(get_db),
 ) -> List[Dict[HabitResponseSchema, str | int | None]]:
@@ -23,20 +23,20 @@ async def get_all(
 async def get_habit_by_id(habit_id: int, db: AsyncSession = Depends(get_db)):
     return await habitService(db).get_habit_by_id(habit_id)
 
-@habit_router.get("/by_title/{title}", response_model=HabitCreateSchema)
+@habit_router.get("/by_title/{title}", response_model=List[HabitCreateSchema])
 async def get_habit_by_title(
     title: str, db: AsyncSession = Depends(get_db)
 ) -> List[Dict[HabitResponseSchema, str | int | None]]:
     return await habitService(db).get_habits_by_title(title)
 
 
-@habit_router.get("/by_user_id/{user_id}", response_model=HabitResponseSchema)
+@habit_router.get("/by_user_id/{user_id}", response_model=List[HabitResponseSchema])
 async def get_habits_by_user_id(user_id: int, db: AsyncSession = Depends(get_db)):
     return await habitService(db).get_habits_by_user_id(user_id)
 
 
 @habit_router.get(
-    "/by_user_telegram_id/{telegram_id}", response_model=HabitResponseSchema
+    "/by_user_telegram_id/{telegram_id}", response_model=List[HabitResponseSchema]
 )
 async def get_habits_by_user_telegram_id(
     telegram_id: int, db: AsyncSession = Depends(get_db)

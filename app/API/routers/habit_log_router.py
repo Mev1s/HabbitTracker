@@ -11,7 +11,7 @@ from ...services.habit_log_service import HabitLogsService
 habit_log_router = APIRouter()
 
 
-@habit_log_router.get("/all", response_model=HabitLogsResponseSchema)
+@habit_log_router.get("/all", response_model=List[HabitLogsResponseSchema])
 async def get_all_habit_logs(
     db: AsyncSession = Depends(get_db),
 ) -> List[Dict[HabitLogsResponseSchema, int | datetime]]:
@@ -19,7 +19,7 @@ async def get_all_habit_logs(
 
 
 @habit_log_router.get(
-    "/get_by_id/{habit_log_id}", response_model=HabitLogsResponseSchema
+    "/get_by_id/{habit_log_id}", response_model=List[HabitLogsResponseSchema]
 )
 async def get_habit_logs_by_id(habit_log_id: int, db: AsyncSession = Depends(get_db)):
     return await HabitLogsService(db).get_habit_logs_by_id(habit_log_id)
@@ -32,6 +32,10 @@ async def get_habit_logs_by_telegram_id(
     telegram_id: int, db: AsyncSession = Depends(get_db)
 ):
     return await HabitLogsService(db).get_habit_logs_by_telegram_id(telegram_id)
+
+@habit_log_router.get("/get_by_date/{date}", response_model=List[HabitLogsResponseSchema])
+async def get_habit_logs_by_date(date: datetime, db: AsyncSession = Depends(get_db)):
+    return await HabitLogsService(db).get_habit_logs_by_date(date)
 
 
 @habit_log_router.post("/create", response_model=HabitLogsResponseSchema)

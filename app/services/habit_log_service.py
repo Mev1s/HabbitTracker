@@ -1,3 +1,5 @@
+from datetime import datetime, time
+
 from fastapi import HTTPException
 
 from ..repository.habit_log_repository import HabitLogRepository
@@ -10,13 +12,13 @@ class HabitLogsService:
         self.session = session
 
     async def get_all_habit_logs(self):
-        result = await HabitLogRepository(self.session).get_all_habits_logs()
+        result = await HabitLogRepository(self.session).get_all_habit_logs()
         if not result:
             raise HTTPException(status_code=404, detail="No habits logs")
         return result
 
     async def get_habit_logs_by_id(self, habit_log_id: int):
-        result = await HabitLogRepository(self.session).get_habit_logs_by_id(
+        result = await HabitLogRepository(self.session).get_habit_log_by_id(
             habit_log_id
         )
         if not result:
@@ -47,8 +49,24 @@ class HabitLogsService:
 
         return habit_logs
 
-   # async def create_habit_logs(self, data):
-        #habits = await HabitRepository(self.session).
+    async def get_habit_logs_by_date(self, date: datetime):
+        target_date = date.date()
+        start = datetime.combine(target_date, time.min)
+        end = datetime.combine(target_date, time.max)
+        habits = await HabitLogRepository(self.session).get_habit_logs_by_habit_date(start, end)
+        if not habits:
+            raise HTTPException(status_code=404, detail="Habit logs not found")
+        return habits
+
+    async def create_habit_logs(self, data):
+        habit = await HabitRepository(self.session).get_habit_by_id(data.habit_id)
+        if not habit:
+            raise HTTPException(status_code=404, detail="Habit not found")
+
+        new_habit_log = await HabitLogRepository(self.session).create_habit_log(data)
+        await self.session.commit()
+        await self.session.refresh(new_habit_log)
+        return new_habit_log
 
 
 
