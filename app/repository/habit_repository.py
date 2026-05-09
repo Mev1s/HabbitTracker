@@ -15,7 +15,9 @@ class HabitRepository:
         return result.scalars().all()
 
     async def get_habit_by_id(self, habit_id: int):
-        result = await self.session.execute(select(HabitsOrm).where(HabitsOrm.id == habit_id))
+        result = await self.session.execute(
+            select(HabitsOrm).where(HabitsOrm.id == habit_id)
+        )
         return result.scalars().all()
 
     async def get_habits_by_title(self, title: str):

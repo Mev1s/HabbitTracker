@@ -14,7 +14,9 @@ class HabitLogRepository:
         return result.scalars().all()
 
     async def get_habit_log_by_id(self, habit_log_id: int):
-        result = await self.session.execute(select(HabitsLogsOrm).where(HabitsLogsOrm.id == habit_log_id))
+        result = await self.session.execute(
+            select(HabitsLogsOrm).where(HabitsLogsOrm.id == habit_log_id)
+        )
         return result.scalars().all()
 
     async def get_habit_logs_by_habit_id(self, habits_id: list[int]):
@@ -24,7 +26,9 @@ class HabitLogRepository:
         return result.scalars().all()
 
     async def get_habit_logs_by_habit_date(self, start, end):
-        result = await self.session.execute(select(HabitsLogsOrm).where(HabitsLogsOrm.complete_at.between(start, end)))
+        result = await self.session.execute(
+            select(HabitsLogsOrm).where(HabitsLogsOrm.complete_at.between(start, end))
+        )
         return result.scalars().all()
 
     async def create_habit_log(self, data: HabitsLogsOrm):

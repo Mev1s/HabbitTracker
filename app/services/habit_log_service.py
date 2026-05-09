@@ -53,7 +53,9 @@ class HabitLogsService:
         target_date = date.date()
         start = datetime.combine(target_date, time.min)
         end = datetime.combine(target_date, time.max)
-        habits = await HabitLogRepository(self.session).get_habit_logs_by_habit_date(start, end)
+        habits = await HabitLogRepository(self.session).get_habit_logs_by_habit_date(
+            start, end
+        )
         if not habits:
             raise HTTPException(status_code=404, detail="Habit logs not found")
         return habits
@@ -67,8 +69,3 @@ class HabitLogsService:
         await self.session.commit()
         await self.session.refresh(new_habit_log)
         return new_habit_log
-
-
-
-
-

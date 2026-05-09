@@ -59,5 +59,3 @@ class habitService:
         await self.session.commit()
         await self.session.refresh(new_habit)
         return new_habit
-
-
