@@ -34,3 +34,14 @@ class UserService:
         await self.session.commit()
         await self.session.refresh(new_user)
         return new_user
+
+    async def user_delete(self, user_id: int):
+        user = await UserRepository(self.session).get_user_by_id(user_id)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        user = await UserRepository(self.session).user_delete(user)
+        await self.session.commit()
+        self.session.refresh(user)
+        return user
+

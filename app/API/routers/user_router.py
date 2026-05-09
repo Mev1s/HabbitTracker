@@ -43,3 +43,12 @@ async def user_create(
     user: UserCreateSchema, db: AsyncSession = Depends(get_db)
 ) -> Dict[UserResponseSchema, int | datetime]:
     return await UserService(db).user_create(user)
+
+
+# delete
+
+@user_router.delete("/delete/by_id/{user_id}", response_model=UserResponseSchema)
+async def user_delete(
+    user_id: int, db: AsyncSession = Depends(get_db)
+):
+    return await UserService(db).user_delete(user_id)

@@ -27,3 +27,7 @@ class UserRepository:
         new_user = UsersOrm(**user.model_dump())
         self.session.add(new_user)
         return new_user
+
+    async def user_delete(self, user: UsersOrm):
+        await self.session.delete(user)
+        return user
