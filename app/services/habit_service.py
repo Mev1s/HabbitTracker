@@ -59,3 +59,23 @@ class habitService:
         await self.session.commit()
         await self.session.refresh(new_habit)
         return new_habit
+
+    async def delete_habit_by_id(self, habit_id: int):
+        habit = await HabitRepository(self.session).get_habit_by_id(habit_id)
+        if not habit:
+            raise HTTPException(status_code=404, detail="Habit not found")
+
+        habit = await HabitRepository(self.session).delete_habit(habit)
+        await self.session.commit()
+        self.session.refresh(habit)
+        return habit
+
+    async def delete_habit_by_title(self, title: str):
+        habit = await HabitRepository(self.session).get_habits_by_title(title)
+        if not habit:
+            raise HTTPException(status_code=404, detail="Habit not found")
+
+        habit = await HabitRepository(self.session).delete_habit(habit)
+        await self.session.commit()
+        self.session.refresh(habit)
+        return habit

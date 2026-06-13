@@ -1,5 +1,7 @@
 from fastapi import HTTPException
+from sqlalchemy.sql.functions import user
 
+from app import repository
 from app.repository.user_repository import UserRepository
 from app.schemas.user_schema import UserCreate
 
@@ -44,3 +46,16 @@ class UserService:
         await self.session.commit()
         self.session.refresh(user)
         return user
+
+    async def user_update(self, user_data, user_id: int):
+        user_get = await UserRepository(self.session).get_user_by_id(user_id)
+        if not user_get:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        user_data = user_data.model_dump(exclude_unset=True)
+        if not user_data:
+            raise HTTPException(status_code=400, detail="user data is null")
+
+        result = await UserRepository(self.session).user_update(user_data, user_id)
+        await self.session.commit()
+        return result

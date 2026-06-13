@@ -31,3 +31,14 @@ class UserRepository:
     async def user_delete(self, user: UsersOrm):
         await self.session.delete(user)
         return user
+
+    async def user_update(self, user_data: UsersOrm, user_id: int):
+        upd = (
+            update(UsersOrm)
+            .where(UsersOrm.id == user_id)
+            .values(**user_data)
+            .returning(UsersOrm)
+        )
+        result = await self.session.execute(upd)
+        updated_user = result.scalars().one_or_none()
+        return updated_user

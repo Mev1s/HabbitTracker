@@ -3,12 +3,14 @@ from datetime import datetime
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends, APIRouter
+from sqlalchemy.orm import dependency
 
 from ...services.user_service import UserService
 from ..deps.deps import get_db
 from ...schemas.user_schema import (
     UserResponse as UserResponseSchema,
     UserCreate as UserCreateSchema,
+    UserUpdate as UserUpdateSchema,
 )
 
 user_router = APIRouter()
@@ -51,3 +53,13 @@ async def user_create(
 @user_router.delete("/delete/by_id/{user_id}", response_model=UserResponseSchema)
 async def user_delete(user_id: int, db: AsyncSession = Depends(get_db)):
     return await UserService(db).user_delete(user_id)
+
+
+# update
+
+
+@user_router.patch("/update/by_id/{user_id}", response_model=UserResponseSchema)
+async def user_update(
+    user_data: UserUpdateSchema, user_id: int, db: AsyncSession = Depends(get_db)
+):
+    return await UserService(db).user_update(user_data, user_id)

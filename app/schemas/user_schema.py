@@ -17,3 +17,9 @@ class UserResponse(UserBase):
 
     id: int
     account_created_at: Annotated[datetime, Field(description="Account created time")]
+
+
+class UserUpdate(UserBase):
+    model_config = ConfigDict(from_attributes=True)
+
+    telegram_id: Annotated[int, Field(description="Telegram unique user id")]

@@ -20,12 +20,12 @@ async def get_all(
     return await habitService(db).get_all_habits()
 
 
-@habit_router.get("by_id/{habit_id}", response_model=List[HabitResponseSchema])
+@habit_router.get("/by_id/{habit_id}", response_model=List[HabitResponseSchema])
 async def get_habit_by_id(habit_id: int, db: AsyncSession = Depends(get_db)):
     return await habitService(db).get_habit_by_id(habit_id)
 
 
-@habit_router.get("/by_title/{title}", response_model=List[HabitCreateSchema])
+@habit_router.get("/by_title/{title}", response_model=HabitCreateSchema)
 async def get_habit_by_title(
     title: str, db: AsyncSession = Depends(get_db)
 ) -> List[Dict[HabitResponseSchema, str | int | None]]:
@@ -49,3 +49,13 @@ async def get_habits_by_user_telegram_id(
 @habit_router.post("/create", response_model=HabitResponseSchema)
 async def create_habit(data: HabitCreateSchema, db: AsyncSession = Depends(get_db)):
     return await habitService(db).create_habit(data)
+
+
+@habit_router.delete("/delete/by_id/{habit_id}", response_model=HabitResponseSchema)
+async def delete_habit_by_id(habit_id: int, db: AsyncSession = Depends(get_db)):
+    return await habitService(db).delete_habit_by_id(habit_id)
+
+
+@habit_router.delete("/delete/by_title/{title}", response_model=HabitResponseSchema)
+async def delete_habit_by_title(title: str, db: AsyncSession = Depends(get_db)):
+    return await habitService(db).delete_habit_by_title(title)

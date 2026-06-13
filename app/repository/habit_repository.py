@@ -18,13 +18,13 @@ class HabitRepository:
         result = await self.session.execute(
             select(HabitsOrm).where(HabitsOrm.id == habit_id)
         )
-        return result.scalars().all()
+        return result.scalars().one_or_none()
 
     async def get_habits_by_title(self, title: str):
         result = await self.session.execute(
             select(HabitsOrm).where(HabitsOrm.title == title)
         )
-        return result.scalars().all()
+        return result.scalars().one_or_none()
 
     async def get_habits_by_user_id(self, user_id: int):
         result = await self.session.execute(
@@ -36,3 +36,7 @@ class HabitRepository:
         new_habit = HabitsOrm(**data.model_dump())
         self.session.add(new_habit)
         return new_habit
+
+    async def delete_habit(self, habit):
+        await self.session.delete(habit)
+        return habit
