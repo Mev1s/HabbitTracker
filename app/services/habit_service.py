@@ -79,3 +79,14 @@ class habitService:
         await self.session.commit()
         self.session.refresh(habit)
         return habit
+
+    async def update_habit_by_id(self, habit_id: int, data):
+        old_habit = await HabitRepository(self.session).get_habit_by_id(habit_id)
+
+        if not old_habit:
+            raise HTTPException(status_code=404, detail="Habit not found")
+
+        data = data.model_dump(exclude_unset=True)
+        new_habit = await HabitRepository(self.session).update_habit(habit_id, data)
+        await self.session.commit()
+        return new_habit

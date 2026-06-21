@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 
 from app.database.models import HabitsOrm, UsersOrm
 from ..schemas.habit_schema import HabitCreate
@@ -40,3 +40,14 @@ class HabitRepository:
     async def delete_habit(self, habit):
         await self.session.delete(habit)
         return habit
+
+    async def update_habit(self, id: int, data):
+        upd = (
+            update(HabitsOrm)
+            .where(HabitsOrm.id == id)
+            .values(**data)
+            .returning(HabitsOrm)
+        )
+        new_habit = await self.session.execute(upd)
+        updated_habit = new_habit.scalars().one_or_none()
+        return updated_habit

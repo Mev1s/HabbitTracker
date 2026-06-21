@@ -1,5 +1,6 @@
 from typing import List, Dict
 
+from _testcapi import awaitType
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -8,6 +9,7 @@ from ..deps.deps import get_db
 from ...schemas.habit_schema import (
     HabitResponse as HabitResponseSchema,
     HabitCreate as HabitCreateSchema,
+    habitUpdate as HabitUpdateSchema,
 )
 
 habit_router = APIRouter()
@@ -59,3 +61,10 @@ async def delete_habit_by_id(habit_id: int, db: AsyncSession = Depends(get_db)):
 @habit_router.delete("/delete/by_title/{title}", response_model=HabitResponseSchema)
 async def delete_habit_by_title(title: str, db: AsyncSession = Depends(get_db)):
     return await habitService(db).delete_habit_by_title(title)
+
+
+@habit_router.patch("/update/by_id/{habit_id}", response_model=HabitResponseSchema)
+async def update_habit(
+    habit_id: int, habit_data: HabitUpdateSchema, db: AsyncSession = Depends(get_db)
+):
+    return await habitService(db).update_habit_by_id(habit_id, habit_data)

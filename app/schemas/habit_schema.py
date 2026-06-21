@@ -24,3 +24,7 @@ class HabitResponse(HabitBase):
 
     id: int
     created_at: datetime
+
+
+class habitUpdate(HabitBase):
+    model_config = ConfigDict(from_attributes=True)
